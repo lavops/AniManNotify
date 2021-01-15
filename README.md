@@ -9,3 +9,5 @@ https://www.npmjs.com/package/mangadex-api
 https://github.com/ejnshtein/mangadex-api
 
 https://discordbotlist.com/bots/mangadex-bot
+
+https://discordjs.guide/command-handling/#individual-command-files
