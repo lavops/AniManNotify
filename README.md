@@ -11,3 +11,5 @@ https://github.com/ejnshtein/mangadex-api
 https://discordbotlist.com/bots/mangadex-bot
 
 https://discordjs.guide/command-handling/#individual-command-files
+
+https://github.com/ricklancee/currently-airing-anime
