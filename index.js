@@ -1,5 +1,5 @@
 const client = require('./src/discord-config')
-const { token } = require('./config.json');
+const { token, tokenTest } = require('./config.json');
 
 // Functions import
 const createNewAnimeReminder = require('./src/functions/createNewAnimeReminder');
@@ -39,6 +39,6 @@ client.on('message', (msg) => {
 });
 
 // Log bot using into discord using your token
-client.login(token).then(() => {
+client.login(tokenTest).then(() => {
     console.log('Succesfully logged in using token!');
 });
