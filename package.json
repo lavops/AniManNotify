@@ -1,14 +1,15 @@
 {
-  "name": "mangadex-notify",
+  "name": "animan-notify",
   "version": "1.0.0",
-  "description": "Get notifications for manga's that you follow.",
+  "description": "Get notifications for anime's and manga's that you follow.",
   "main": "nodemon index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lavops/MangaDexDiscrodBot.git"
+    "url": "git+https://github.com/lavops/AniManNotify.git"
   },
   "keywords": [
     "mangadex"
@@ -16,9 +17,9 @@
   "author": "Djordje Milicevic",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/lavops/MangaDexDiscrodBot/issues"
+    "url": "https://github.com/lavops/AniManNotify/issues"
   },
-  "homepage": "https://github.com/lavops/MangaDexDiscrodBot#readme",
+  "homepage": "https://github.com/lavops/AniManNotify#readme",
   "dependencies": {
     "currently-airing-anime": "^0.6.3",
     "discord.js": "^12.5.1",
