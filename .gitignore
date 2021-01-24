@@ -1,6 +1,6 @@
-#CONFIG FILES
+#CONFIG FILES & DATABASE
 config.json
-
+db/database.db
 # Logs
 logs
 *.log
