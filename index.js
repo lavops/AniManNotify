@@ -10,7 +10,12 @@ client.on('ready', () => {
 });
 
 client.on('message', (msg) => {
-    createNewAnimeReminder(msg)
+    command = msg.content.split(" ");
+    if(command[0] === "!addAnime"){
+        msg.content = msg.content.replace("!addAnime ", "");
+        console.log(msg.content);
+        createNewAnimeReminder(msg);
+    }
 });
 
 //Log bot using into discord using your token

@@ -1,10 +1,10 @@
+// Imports
 const db = require('../../db/database-config');
 const fetch = require('node-fetch');
 const currentlyAiringAnime = require('currently-airing-anime');
 global.fetch = fetch;
 
-const checkAnimeDatabase = async (malID) => {
-//function checkAnimeDatabase (malID) {
+const checkAnimeDatabase = async (malID, callback) => {
     db.serialize(() => {
         db.prepare("CREATE TABLE IF NOT EXISTS anime (malID INTEGER, name TEXT, image TEXT, totalEpisodes INTEGER, currentEpisode INTEGER, airingAt INTEGER)").run().finalize();
 
@@ -54,12 +54,13 @@ const checkAnimeDatabase = async (malID) => {
                             valid : true,
                             malID : malID,
                             name : animeName,
-                            image : totalEpisodes,
+                            image : image,
+                            totalEpisodes : totalEpisodes,
                             currentEpisode : currentEpisode,
                             airingAt : airingAt
                         };
 
-                        return anime;
+                        callback(anime);
                     }
                     catch {
                         console.log("~ That anime is not currently airing.");
@@ -68,11 +69,12 @@ const checkAnimeDatabase = async (malID) => {
                             malID : null,
                             name : null,
                             image : null,
+                            totalEpisodes : null,
                             currentEpisode : null,
                             airingAt : null
                         };
 
-                        return anime;
+                        callback(anime);
                     }
                 }).catch((error) => {
                     console.log("~ That anime is not currently airing.");
@@ -81,11 +83,12 @@ const checkAnimeDatabase = async (malID) => {
                         malID : null,
                         name : null,
                         image : null,
+                        totalEpisodes : null,
                         currentEpisode : null,
                         airingAt : null
                     };
 
-                    return anime;
+                    callback(anime);
                 });
             }
             else {
@@ -94,12 +97,13 @@ const checkAnimeDatabase = async (malID) => {
                     valid : true,
                     malID : row[0].malID,
                     name : row[0].name,
-                    image : row[0].totalEpisodes,
+                    image : row[0].image,
+                    totalEpisodes : row[0].totalEpisodes,
                     currentEpisode : row[0].currentEpisode,
                     airingAt : row[0].airingAt
                 };
 
-                return anime;
+                callback(anime);
             }
         });
     });
