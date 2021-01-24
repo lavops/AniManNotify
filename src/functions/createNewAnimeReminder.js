@@ -1,4 +1,5 @@
 const db = require('../../db/database-config');
+const { MessageEmbed } = require('discord.js');
 
 // Functions
 const checkAnimeDatabase = require('./checkAnimeDatabase');
@@ -21,30 +22,39 @@ const createNewAnimeReminder = async (msg) => {
             db.all("SELECT * FROM animeReminder WHERE (malID = ? AND channelID = ?)", [parseInt(malID), channelID], (error, row) => {
                 
                 if (error || row.length == 0) {
-                    console.log("~ There's no reminder for this anime on this channel.");
-                    console.log("~ We will make one right now.");
+                    // There's no reminder for this anime on this channel
+                    // We will make one right now
 
                     db.run("INSERT INTO animeReminder (malID, username, userID, channelID) VALUES (?, ?, ?, ?)", [malID, username, userID, channelID]);
-                    console.log("~ Succesfully added new reminder.");
+                    // Succesfully added new reminder
 
-                    // SEND EMBED
-                    const embed = createEmbed(anime, false, '');
+                    // Send embed
+                    str = "Succesfully added new anime reminder.\n";
+                    str += "Lastest episode is " + anime.currentEpisode + ". We will notify you when next one come's out.";
+                    
+                    const embed = new MessageEmbed()
+                        .setTitle(anime.name)
+                        .setColor(0xff0000)
+                        .setDescription(str)
+                        .setURL('https://myanimelist.net/anime/' + anime.malID)
+                        .setThumbnail(anime.image);
+                    
                     msg.channel.send(embed);
                 }
                 else {
-                    console.log("~ You already have this reminder on your channel.");
+                    // You already have this reminder on your channel
 
                     // SEND EMBED
-                    const embed = createEmbed(anime, true, 'You already have this reminder on your channel.');
+                    const embed = new MessageEmbed().setTitle('You already have this reminder on your channel.');
                     msg.channel.send(embed);
                 }
             });
         }
         else {
-            console.log("~ That anime is not currently airing.");
+            // That anime is not currently airing
 
-            // SEND EMBED
-            const embed = createEmbed(anime, true, 'That anime is not currently airing.')
+            // Send embed
+            const embed = new MessageEmbed().setTitle('That anime is not currently airing.');
             msg.channel.send(embed);
         }
     });
