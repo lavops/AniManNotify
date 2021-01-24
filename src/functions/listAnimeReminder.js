@@ -1,7 +1,6 @@
 const db = require('../../db/database-config');
 const { MessageEmbed } = require('discord.js');
 
-
 const listAnimeReminder = async (msg) => {
     const channelID = msg.channel.id;
     var str = "";
@@ -26,31 +25,6 @@ const listAnimeReminder = async (msg) => {
             msg.channel.send(embed);
         });
     });
-
-    // db.each("SELECT * FROM animeReminder WHERE channelID = ?", [channelID], (error, reminder) => {
-    
-    //     if (error || !reminder) {
-    //         return console.log('Error or no reminder found');
-    //     }
-        
-    //     db.each("SELECT * FROM anime WHERE malID = ?", [reminder.malID], (error, anime) => {
-    //         if (error || !anime) {
-    //             return console.log('Error or no anime found');
-    //         }
-
-    //         str += "MAL ID: " + anime.malID + " Name: " + anime.name + " Episode: " + anime.currentEpisode + "\n";
-    //     });
-        
-    // });
-
-    // if(str == "")
-    //     str += "You don't have any anime reminder on your channel.";
-    
-    // const embed = new MessageEmbed()
-    //     .setTitle("Anime reminders:")
-    //     .setDescription(str);
-    
-    // msg.channel.send(embed);
 }
 
 module.exports = listAnimeReminder
