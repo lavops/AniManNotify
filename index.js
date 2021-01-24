@@ -39,6 +39,6 @@ client.on('message', (msg) => {
 });
 
 // Log bot using into discord using your token
-client.login(tokenTest).then(() => {
+client.login(token).then(() => {
     console.log('Succesfully logged in using token!');
 });
