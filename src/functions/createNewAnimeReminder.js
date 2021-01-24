@@ -3,7 +3,6 @@ const { MessageEmbed } = require('discord.js');
 
 // Functions
 const checkAnimeDatabase = require('./checkAnimeDatabase');
-const createEmbed = require('./createEmbed');
 
 const createNewAnimeReminder = async (msg) => {
     checkAnimeDatabase(msg.content, function(data){
@@ -30,8 +29,11 @@ const createNewAnimeReminder = async (msg) => {
 
                     // Send embed
                     str = "Succesfully added new anime reminder.\n";
-                    str += "Lastest episode is " + anime.currentEpisode + ". We will notify you when next one come's out.";
-                    
+                    if(anime.totalEpisodes != null)
+                        str += "Lastest episode is " + anime.currentEpisode + "/"+ anime.totalEpisodes +". We will notify you when next one come's out.";
+                    else
+                        str += "Lastest episode is " + anime.currentEpisode + "/?. We will notify you when next one come's out.";
+
                     const embed = new MessageEmbed()
                         .setTitle(anime.name)
                         .setColor(0xff0000)
