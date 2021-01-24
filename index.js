@@ -1,5 +1,7 @@
+const express = require('express');
 const client = require('./src/discord-config')
 require('dotenv').config();
+const app = express();
 //const { token, tokenTest } = require('./config.json');
 
 // Functions import
@@ -40,6 +42,14 @@ client.on('message', (msg) => {
 });
 
 // Log bot using into discord using your token
-client.login(process.env.TOKEN).then(() => {
+client.login(process.env.TOKEN_TEST).then(() => {
     console.log('Succesfully logged in using token!');
 });
+
+app.get('/',function(req, res){
+    res.send('AniMan Notfy Discord Bot');
+})
+
+app.listen(process.env.PORT, () => {
+    console.log(`App listening at ${process.env.PORT} PORT`);
+})
