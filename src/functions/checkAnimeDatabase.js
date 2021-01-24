@@ -12,8 +12,8 @@ const checkAnimeDatabase = async (malID, callback) => {
             // If there's no malID in our database
             // Check if anime is airing and then add it to database
             if (error || row.length == 0) {
-                console.log("~ There's no that anime at moment in our database.");
-                console.log("~ We will check if that anime is airing now.");
+                // There's no that anime at moment in our database
+                // We will check if that anime is airing now
 
                 // Possible configuration options
                 // currentlyAiringAnime({
@@ -49,7 +49,7 @@ const checkAnimeDatabase = async (malID, callback) => {
                         // Insert new anime in database
                         db.run("INSERT INTO anime (malID, name, image, totalEpisodes, currentEpisode, airingAt) VALUES (?, ?, ?, ?, ?, ?)", [malID, animeName, image, totalEpisodes, currentEpisode, airingAt]);
                         
-                        console.log("~ Succesfully added new anime in our database.");
+                        // Succesfully added new anime in our database
                         var anime = {
                             valid : true,
                             malID : malID,
@@ -63,7 +63,7 @@ const checkAnimeDatabase = async (malID, callback) => {
                         callback(anime);
                     }
                     catch {
-                        console.log("~ That anime is not currently airing.");
+                        // That anime is not currently airing
                         var anime = {
                             valid : false,
                             malID : null,
@@ -77,7 +77,7 @@ const checkAnimeDatabase = async (malID, callback) => {
                         callback(anime);
                     }
                 }).catch((error) => {
-                    console.log("~ That anime is not currently airing.");
+                    // That anime is not currently airing
                     var anime = {
                         valid : false,
                         malID : null,
@@ -92,7 +92,7 @@ const checkAnimeDatabase = async (malID, callback) => {
                 });
             }
             else {
-                console.log("~ That anime exists in our database.");
+                // That anime exists in our database
                 var anime = {
                     valid : true,
                     malID : row[0].malID,

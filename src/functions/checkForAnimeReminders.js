@@ -11,7 +11,7 @@ const checkForAnimeReminders = () => {
             if (error || !anime) {
                 return console.log('Error or no row found')
             }
-            console.log(anime);
+            console.log(anime.name + " has new episode.");
             anime.currentEpisode = anime.currentEpisode + 1;
             anime.airingAt = anime.airingAt + 604800;
             
