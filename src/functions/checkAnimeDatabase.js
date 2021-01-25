@@ -35,7 +35,7 @@ const checkAnimeDatabase = async (malID, callback) => {
                             animeName = shows[1].title.english;
                             image = shows[1].coverImage.large;
                             totalEpisodes = shows[1].episodes;
-                            currentEpisode = shows[1].nextAiringEpisode.episode;
+                            currentEpisode = shows[1].nextAiringEpisode.episode - 1;
                             airingAt = shows[1].nextAiringEpisode.airingAt;
                         }
                         else{

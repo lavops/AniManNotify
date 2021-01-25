@@ -11,7 +11,8 @@ const checkForAnimeReminders = () => {
             if (error || !anime) {
                 return console.log('Error or no row found')
             }
-            console.log(anime.name + " has new episode.");
+            var d = new Date(day, hours, minutes, seconds);
+            console.log(d + ": " + anime.name + " has new episode.");
             anime.currentEpisode = anime.currentEpisode + 1;
             anime.airingAt = anime.airingAt + 604800;
             
@@ -38,7 +39,7 @@ const checkForAnimeReminders = () => {
             });
 
             if(anime.totalEpisodes == null || anime.totalEpisodes > anime.currentEpisode)
-                db.run("UPDATE anime SET currentEpisode = ?, airingAt = ? WHERE malID = ?", [anime.currentEpisode, anime.airingAt, anime.MALID]);
+                db.run("UPDATE anime SET currentEpisode = ?, airingAt = ? WHERE malID = ?", [anime.currentEpisode, anime.airingAt, anime.malID]);
             else if(anime.totalEpisodes == anime.currentEpisode){
                 db.run("DELETE FROM anime WHERE malID = ?", [anime.malID]);
                 db.run("DELETE FROM animeReminder WHERE malID = ?", [anime.malID]);
