@@ -15,8 +15,8 @@ client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
 });
 
-// Run checkForAnimeReminders every 10 minutes to scan DB for new episodes
-setInterval(checkForAnimeReminders, 600000);
+// Run checkForAnimeReminders every 5 minutes to scan DB for new episodes
+setInterval(checkForAnimeReminders, 300000);
 
 // Bot will use these commands
 const commands = {
@@ -42,7 +42,7 @@ client.on('message', (msg) => {
 });
 
 // Log bot using into discord using your token
-client.login(process.env.TOKEN_TEST).then(() => {
+client.login(process.env.TOKEN).then(() => {
     console.log('Succesfully logged in using token!');
 });
 
