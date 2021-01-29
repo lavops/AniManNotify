@@ -4,15 +4,13 @@ const { MessageEmbed } = require('discord.js')
 const db = require('../../db/database-config')
 
 const checkForAnimeReminders = () => {
-    var d = new Date(day, hours, minutes, seconds);
-    console.log(d + " Checking for reminder!");  
     db.serialize(() => {
         // Select all messages older than the current dateTime
         db.each("SELECT malID, name, image, totalEpisodes, currentEpisode, airingAt FROM anime WHERE DATETIME(airingAt, 'unixepoch') < DATETIME()", (error, anime) => {
             if (error || !anime) {
                 return console.log('Error or no row found')
             }
-            console.log(d + ": " + anime.name + " has new episode.");
+            console.log(anime.name + " has new episode.");
             anime.currentEpisode = anime.currentEpisode + 1;
             anime.airingAt = anime.airingAt + 604800;
             

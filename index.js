@@ -2,6 +2,7 @@ const express = require('express');
 const client = require('./src/discord-config')
 require('dotenv').config();
 const app = express();
+const db = require('./db/database-config');
 //const { token, tokenTest } = require('./config.json');
 
 // Functions import
@@ -48,6 +49,18 @@ client.login(process.env.TOKEN).then(() => {
 
 app.get('/',function(req, res){
     res.send('AniMan Notfy Discord Bot');
+})
+
+app.get('/anime',function(req, res){
+    db.serialize(() => {
+        db.all("SELECT * FROM anime", (error, shows) => {
+            if (error || shows.length == 0) {
+                res.send(null);
+            }
+            var result = JSON.stringify(shows);
+            res.send(result);
+        });
+    });
 })
 
 app.listen(process.env.PORT, () => {
