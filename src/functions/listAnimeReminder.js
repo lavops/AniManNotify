@@ -4,19 +4,35 @@ var moment = require('moment');
 
 const listAnimeReminder = async (msg) => {
     const channelID = msg.channel.id;
+    const userID = msg.author.id;
+    const username = msg.author.username;
     var str = "";
+
+    db.prepare("CREATE TABLE IF NOT EXISTS messageNotSentError (timestamp INTEGER, username TEXT, userID INTEGER, channelID INTEGER, message TEXT)").run().finalize();
+
     db.serialize(() => {
         db.all("SELECT AR.*, A.*  FROM animeReminder as AR LEFT JOIN anime as A ON AR.malID = A.malID WHERE AR.channelID = ? ORDER BY A.airingAt", [channelID], (error, reminders) => {
-        
+            const embed = new MessageEmbed();
+
             if (error || !reminders) {
+                embed.setDescription("You don't have any anime reminder on your channel.");
+                
+                try {
+                    msg.channel.send(embed); 
+                } catch (error) {
+                    // ERROR while LISTING Animes from database
+                    let timestamp = Date.now();
+                    let message = "Error while listing Animes. Maybe some premissions fault.";
+                    db.run("INSERT INTO messageNotSentError (timestamp, username, userID, channelID, message) VALUES (?, ?, ?, ?, ?)", [timestamp, username, userID, channelID, message]);
+                    console.log("ERROR WHILE LISTING ANIMEs.");
+                }
                 return console.log('Error or no reminder found');
             }
-
-            const embed = new MessageEmbed();
+            
             let names = "";
             let episodes = "";
             let malIDs = "";
-            let airingAt = ""
+            let airingAt = "";
             for(let i = 0; i < reminders.length; i++){
                 malIDs += "" + reminders[i].malID + "\n";
                 episodes += "" + reminders[i].currentEpisode + "    next in " + moment.unix(reminders[i].airingAt).fromNow(true) + "\n";
@@ -29,7 +45,7 @@ const listAnimeReminder = async (msg) => {
                 airingAt += moment.unix(reminders[i].airingAt).fromNow(true) + "\n";
             }
 
-            if(names == "" && episodes == "" && malID == ""){
+            if(names == "" && episodes == "" && malIDs == ""){
                 embed.setDescription("You don't have any anime reminder on your channel.")
             }
             else{
@@ -51,7 +67,17 @@ const listAnimeReminder = async (msg) => {
             //     .setTitle("Anime reminders:")
             //     .setDescription(str);
             
-            msg.channel.send(embed);
+            try {
+                msg.channel.send(embed);
+            } catch (error) {
+                // ERROR while LISTING Animes from database
+                let timestamp = Date.now();
+                let message = "Error while listing Animes. Maybe some premissions fault.";
+                db.run("INSERT INTO messageNotSentError (timestamp, username, userID, channelID, message) VALUES (?, ?, ?, ?, ?)", [timestamp, username, userID, channelID, message]);
+                console.log("ERROR WHILE LISTING ANIMEs.");
+            }
+
+            
         });
     });
 }

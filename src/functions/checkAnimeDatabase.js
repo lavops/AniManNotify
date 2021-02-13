@@ -7,6 +7,7 @@ global.fetch = fetch;
 const checkAnimeDatabase = async (malID, callback) => {
     db.serialize(() => {
         db.prepare("CREATE TABLE IF NOT EXISTS anime (malID INTEGER, name TEXT, image TEXT, totalEpisodes INTEGER, currentEpisode INTEGER, airingAt INTEGER)").run().finalize();
+        db.prepare("CREATE TABLE IF NOT EXISTS animeNotAiringError (timestamp INTEGER, message TEXT, malID INTEGER)").run().finalize();
 
         db.all("SELECT * FROM anime WHERE malID = ?", [parseInt(malID)], (error, row) => {
             // If there's no malID in our database
@@ -32,17 +33,23 @@ const checkAnimeDatabase = async (malID, callback) => {
                         // returns 2 objets if returns 2 first one is a junk
                         if(shows.length > 1){
                             console.log(shows[1].title.english);
-                            animeName = shows[1].title.english;
+                            if(shows[1].title.english != null)
+                                animeName = shows[1].title.english;
+                            else
+                                animeName = shows[1].title.romaji;
                             image = shows[1].coverImage.large;
                             totalEpisodes = shows[1].episodes;
                             currentEpisode = shows[1].nextAiringEpisode.episode - 1;
                             airingAt = shows[1].nextAiringEpisode.airingAt;
                         }
                         else{
-                            animeName = shows[0].title.english;
+                            if(shows[0].title.english != null)
+                                animeName = shows[0].title.english;
+                            else
+                                animeName = shows[0].title.romaji;
                             image = shows[0].coverImage.large;
                             totalEpisodes = shows[0].episodes;
-                            currentEpisode = shows[0].nextAiringEpisode.episode;
+                            currentEpisode = shows[0].nextAiringEpisode.episode - 1;
                             airingAt = shows[0].nextAiringEpisode.airingAt;
                         }
                         
@@ -74,6 +81,11 @@ const checkAnimeDatabase = async (malID, callback) => {
                             airingAt : null
                         };
 
+                        // Log Anime that don't exits
+                        let timestamp = Date.now();
+                        let message = "Someone tried to add anime that don't air anymore";
+                        db.run("INSERT INTO animeNotAiringError (timestamp, message, malID) VALUES (?, ?, ?)", [timestamp, message, malID]);
+
                         callback(anime);
                     }
                 }).catch((error) => {
@@ -87,6 +99,11 @@ const checkAnimeDatabase = async (malID, callback) => {
                         currentEpisode : null,
                         airingAt : null
                     };
+
+                    // Log Anime that don't exits
+                    let timestamp = Date.now();
+                    let message = "Someone tried to add anime that don't air anymore";
+                    db.run("INSERT INTO animeNotAiringError (timestamp, message, malID) VALUES (?, ?, ?)", [timestamp, message, malID]);
 
                     callback(anime);
                 });

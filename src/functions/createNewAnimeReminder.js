@@ -17,6 +17,7 @@ const createNewAnimeReminder = async (msg) => {
             username = msg.author.username;
 
             db.prepare("CREATE TABLE IF NOT EXISTS animeReminder (malID INTEGER, username TEXT, userID TEXT, channelID TEXT)").run().finalize();
+            db.prepare("CREATE TABLE IF NOT EXISTS messageNotSentError (timestamp INTEGER, username TEXT, userID INTEGER, channelID INTEGER, message TEXT)").run().finalize();
 
             db.all("SELECT * FROM animeReminder WHERE (malID = ? AND channelID = ?)", [parseInt(malID), channelID], (error, row) => {
                 
@@ -41,14 +42,32 @@ const createNewAnimeReminder = async (msg) => {
                         .setURL('https://myanimelist.net/anime/' + anime.malID)
                         .setThumbnail(anime.image);
                     
-                    msg.channel.send(embed);
+                    
+                    try {
+                        msg.channel.send(embed);
+                    } catch (error) {
+                        // ERROR while ADDING Animes from database
+                        let timestamp = Date.now();
+                        let message = "Error while adding Anime. Maybe some premissions fault.";
+                        db.run("INSERT INTO messageNotSentError (timestamp, username, userID, channelID, message) VALUES (?, ?, ?, ?, ?)", [timestamp, username, userID, channelID, message]);
+                        console.log("ERROR WHILE ADDING ANIMEs.");
+                    }
                 }
                 else {
                     // You already have this reminder on your channel
 
                     // SEND EMBED
                     const embed = new MessageEmbed().setTitle('You already have this reminder on your channel.');
-                    msg.channel.send(embed);
+                    
+                    try {
+                        msg.channel.send(embed);
+                    } catch (error) {
+                        // ERROR while ADDING Animes from database
+                        let timestamp = Date.now();
+                        let message = "Error while adding Anime. Maybe some premissions fault.";
+                        db.run("INSERT INTO messageNotSentError (timestamp, username, userID, channelID, message) VALUES (?, ?, ?, ?, ?)", [timestamp, username, userID, channelID, message]);
+                        console.log("ERROR WHILE ADDING ANIMEs.");
+                    }
                 }
             });
         }
@@ -57,7 +76,16 @@ const createNewAnimeReminder = async (msg) => {
 
             // Send embed
             const embed = new MessageEmbed().setTitle('That anime is not currently airing.');
-            msg.channel.send(embed);
+            
+            try {
+                msg.channel.send(embed);
+            } catch (error) {
+                // ERROR while ADDING Animes from database
+                let timestamp = Date.now();
+                let message = "Error while adding Anime. Maybe some premissions fault.";
+                db.run("INSERT INTO messageNotSentError (timestamp, username, userID, channelID, message) VALUES (?, ?, ?, ?, ?)", [timestamp, username, userID, channelID, message]);
+                console.log("ERROR WHILE ADDING ANIMEs.");
+            }
         }
     });
 }
