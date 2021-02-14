@@ -1,5 +1,6 @@
 const db = require('../../db/database-config');
 const { MessageEmbed } = require('discord.js');
+const Discord = require('discord.js');
 
 // Functions
 const checkAnimeDatabase = require('./checkAnimeDatabase');
@@ -31,17 +32,20 @@ const createNewAnimeReminder = async (msg) => {
                     // Send embed
                     str = "Succesfully added new anime reminder.\n";
                     if(anime.totalEpisodes != null)
-                        str += "Lastest episode is " + anime.currentEpisode + "/"+ anime.totalEpisodes +". We will notify you when next one come's out.";
+                        str += "Lastest episode is " + anime.currentEpisode + "/"+ anime.totalEpisodes +". We will notify you when next one come's out.\n\n";
                     else
-                        str += "Lastest episode is " + anime.currentEpisode + "/?. We will notify you when next one come's out.";
+                        str += "Lastest episode is " + anime.currentEpisode + "/?. We will notify you when next one come's out.\n\n";
 
+                    str += "[Vote](https://top.gg/bot/799392333677854751/vote) - [Support Channel](https://discord.com/invite/QV8q9BQXpW)";
                     const embed = new MessageEmbed()
                         .setTitle(anime.name)
-                        .setColor(0xff0000)
+                        //.setAuthor("AniMan Notify", "https://i.imgur.com/vIgALCX.jpg", "https://top.gg/bot/799392333677854751/vote")
+                        //.setColor(0xff0000)
                         .setDescription(str)
+                        //.addField("[Vote](https://top.gg/bot/799392333677854751/vote)")
                         .setURL('https://myanimelist.net/anime/' + anime.malID)
-                        .setThumbnail(anime.image);
-                    
+                        .setThumbnail(anime.image)
+                        .setTimestamp();                    
                     
                     try {
                         msg.channel.send(embed);

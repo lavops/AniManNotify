@@ -27,16 +27,19 @@ const checkForAnimeReminders = () => {
                 //console.log(reminder);
                 str = "New episode is out in Japan.\n";
                 if(anime.totalEpisodes != null)
-                    str += "Current episode is " + anime.currentEpisode + "/"+ anime.totalEpisodes +". We will notify you when next one come's out.";
+                    str += "Current episode is " + anime.currentEpisode + "/"+ anime.totalEpisodes +". We will notify you when next one come's out.\n\n";
                 else
-                    str += "Current episode is " + anime.currentEpisode + "/?. We will notify you when next one come's out.";
+                    str += "Current episode is " + anime.currentEpisode + "/?. We will notify you when next one come's out.\n\n";
 
+                str += "[Vote](https://top.gg/bot/799392333677854751/vote) - [Support Channel](https://discord.com/invite/QV8q9BQXpW)";
                 const embed = new MessageEmbed()
                     .setTitle(anime.name)
-                    .setColor(0xff0000)
+                    //.setAuthor("AniMan Notify", "https://i.imgur.com/vIgALCX.jpg", "https://top.gg/bot/799392333677854751/vote")
+                    //.setColor(0xff0000)
                     .setDescription(str)
                     .setURL('https://myanimelist.net/anime/' + anime.malID)
-                    .setImage(anime.image);
+                    .setImage(anime.image)
+                    .setTimestamp();
                     
                 const channel = client.channels.cache.get(reminder.channelID);
 

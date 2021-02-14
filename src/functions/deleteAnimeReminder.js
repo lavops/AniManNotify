@@ -13,7 +13,9 @@ const deleteAnimeReminder = async (msg) => {
     db.all("SELECT * FROM animeReminder WHERE (malID = ? AND channelID = ?)", [parseInt(malID), channelID], (error, row) => {
         
         if (error || row.length == 0) {
-            const embed = new MessageEmbed().setTitle("There's no reminder for that anime on your channel.");
+            const embed = new MessageEmbed()
+            .setTitle("There's no reminder for that anime on your channel.")
+            .setDescription("[Vote](https://top.gg/bot/799392333677854751/vote) - [Support Channel](https://discord.com/invite/QV8q9BQXpW)");
             
             try {
                 msg.channel.send(embed);
@@ -27,7 +29,10 @@ const deleteAnimeReminder = async (msg) => {
         }
         else{
             db.run("DELETE FROM animeReminder WHERE (malID = ? AND channelID = ?)", [parseInt(malID), channelID]);
-            const embed = new MessageEmbed().setTitle("Succesfully deleted that reminder.");
+            const embed = new MessageEmbed()
+            .setTitle("Succesfully deleted that reminder.")
+            .setDescription("[Vote](https://top.gg/bot/799392333677854751/vote) - [Support Channel](https://discord.com/invite/QV8q9BQXpW)");
+
             try {
                 msg.channel.send(embed);
             } catch (error) {

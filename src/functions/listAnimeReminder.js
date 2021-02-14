@@ -15,7 +15,7 @@ const listAnimeReminder = async (msg) => {
             const embed = new MessageEmbed();
 
             if (error || !reminders) {
-                embed.setDescription("You don't have any anime reminder on your channel.");
+                embed.setDescription("You don't have any anime reminder on your channel.\n\n[Vote](https://top.gg/bot/799392333677854751/vote) - [Support Channel](https://discord.com/invite/QV8q9BQXpW)");
                 
                 try {
                     msg.channel.send(embed); 
