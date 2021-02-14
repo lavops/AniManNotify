@@ -3,6 +3,8 @@ const client = require('./src/discord-config')
 require('dotenv').config();
 const app = express();
 const db = require('./db/database-config');
+const AutoPoster = require('topgg-autoposter')
+const ap = AutoPoster(process.env.TOPGG_TOKEN, client)
 //const { token, tokenTest } = require('./config.json');
 
 // Functions import
@@ -12,12 +14,17 @@ const listAnimeReminder = require('./src/functions/listAnimeReminder');
 const checkForAnimeReminders = require('./src/functions/checkForAnimeReminders');
 
 // Confirm successful log in
-client.on('ready', () => {
+// client.on('ready', () => {
+//     console.log(`Logged in as ${client.user.tag}!`);
+// });
+
+ap.on('posted', () => {
     console.log(`Logged in as ${client.user.tag}!`);
-});
+    console.log('Posted stats to Top.gg!')
+})
 
 // Run checkForAnimeReminders every 5 minutes to scan DB for new episodes
-setInterval(checkForAnimeReminders, 100000);
+setInterval(checkForAnimeReminders, 300000);
 
 // Bot will use these commands
 const commands = {
@@ -43,7 +50,7 @@ client.on('message', (msg) => {
 });
 
 // Log bot using into discord using your token
-client.login(process.env.TOKEN_TEST).then(() => {
+client.login(process.env.TOKEN).then(() => {
     console.log('Succesfully logged in using token!');
 });
 

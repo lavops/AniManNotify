@@ -32,7 +32,6 @@ const checkAnimeDatabase = async (malID, callback) => {
                         // Some times currently-airing-anime api 
                         // returns 2 objets if returns 2 first one is a junk
                         if(shows.length > 1){
-                            console.log(shows[1].title.english);
                             if(shows[1].title.english != null)
                                 animeName = shows[1].title.english;
                             else

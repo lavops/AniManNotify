@@ -34,15 +34,22 @@ const listAnimeReminder = async (msg) => {
             let malIDs = "";
             let airingAt = "";
             for(let i = 0; i < reminders.length; i++){
-                malIDs += "" + reminders[i].malID + "\n";
-                episodes += "" + reminders[i].currentEpisode + "    next in " + moment.unix(reminders[i].airingAt).fromNow(true) + "\n";
-                if(reminders[i].name.length > 50){
-                    names += "" + reminders[i].name.slice(0, 47) + "...\n";
+                
+                if(names.length + 48 < 1024){
+                    malIDs += "" + reminders[i].malID + "\n";
+                    episodes += "" + reminders[i].currentEpisode + ", next ep in " + moment.unix(reminders[i].airingAt).fromNow(true) + "\n";
+                    airingAt += moment.unix(reminders[i].airingAt).fromNow(true) + "\n";
+                    if(reminders[i].name.length > 48){
+                        names += "" + reminders[i].name.slice(0, 45) + "...\n";
+                    }
+                    else{
+                        names += "" + reminders[i].name + "\n";
+                    }
                 }
                 else{
-                    names += "" + reminders[i].name + "\n";
+                    embed.setDescription("We can't fit all your animes in one message.")
                 }
-                airingAt += moment.unix(reminders[i].airingAt).fromNow(true) + "\n";
+                
             }
 
             if(names == "" && episodes == "" && malIDs == ""){
