@@ -41,9 +41,8 @@ const checkForAnimeReminders = () => {
                     .setImage(anime.image)
                     .setTimestamp();
                     
-                const channel = client.channels.cache.get(reminder.channelID);
-
                 try {
+                    const channel = client.channels.cache.get(reminder.channelID);
                     channel.send(embed).catch(error => {
                         // ERROR -> User is not friend with a bot anymore
                         // DELETE from reminders and LOG that
@@ -68,7 +67,7 @@ const checkForAnimeReminders = () => {
             // DELETE if Anime is finished
             if(anime.totalEpisodes == null || anime.totalEpisodes > anime.currentEpisode)
                 db.run("UPDATE anime SET currentEpisode = ?, airingAt = ? WHERE malID = ?", [anime.currentEpisode, anime.airingAt, anime.malID]);
-            else if(anime.totalEpisodes == anime.currentEpisode){
+            else if(anime.totalEpisodes == anime.currentEpisode || anime.currentEpisode > anime.totalEpisodes){
                 db.run("DELETE FROM anime WHERE malID = ?", [anime.malID]);
                 db.run("DELETE FROM animeReminder WHERE malID = ?", [anime.malID]);
             }
