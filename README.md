@@ -1,5 +1,7 @@
 # MangaDexDiscrodBot
 
+[![Discord Bots](https://top.gg/api/widget/799392333677854751.svg)](https://top.gg/bot/799392333677854751)
+
 Bot for notifying you about new anime episodes:
 
 Commands:
@@ -51,6 +53,4 @@ https://github.com/vandyliu/discord-reminder-bot
 https://github.com/pixlbreaker/ReminderBot
 
 https://www.epochconverter.com/
-
-[![Discord Bots](https://top.gg/api/widget/799392333677854751.svg)](https://top.gg/bot/799392333677854751)
 
