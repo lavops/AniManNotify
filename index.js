@@ -16,9 +16,17 @@ const checkForAnimeReminders = require('./src/functions/checkForAnimeReminders')
 // Confirm successful log in
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
+
+    client.user.setPresence({
+        status: 'online',
+        activity: {
+            name: "Anime",
+            type: "WATCHING",
+        }
+    });
 });
 
-// ap.on('posted', () => {
+// app.on('posted', () => {
 //     console.log(`Logged in as ${client.user.tag}!`);
 //     console.log('Posted stats to Top.gg!')
 // })
@@ -50,7 +58,7 @@ client.on('message', (msg) => {
 });
 
 // Log bot using into discord using your token
-client.login(process.env.TOKEN_TEST).then(() => {
+client.login(process.env.TOKEN).then(() => {
     console.log('Succesfully logged in using token!');
 });
 
