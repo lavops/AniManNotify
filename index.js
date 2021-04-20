@@ -4,8 +4,8 @@ require('dotenv').config();
 const app = express();
 const db = require('./db/database-config');
 const AutoPoster = require('topgg-autoposter')
-//const ap = AutoPoster(process.env.TOPGG_TOKEN, client)
-//const { token, tokenTest } = require('./config.json');
+// const ap = AutoPoster(process.env.TOPGG_TOKEN, client)
+// const { token, tokenTest } = require('./config.json');
 
 // Functions import
 const createNewAnimeReminder = require('./src/functions/createNewAnimeReminder');
@@ -26,9 +26,17 @@ client.on('ready', () => {
     });
 });
 
-// app.on('posted', () => {
+// ap.on('posted', () => {
 //     console.log(`Logged in as ${client.user.tag}!`);
 //     console.log('Posted stats to Top.gg!')
+
+//     client.user.setPresence({
+//         status: 'online',
+//         activity: {
+//             name: "Anime",
+//             type: "WATCHING",
+//         }
+//     });
 // })
 
 // Run checkForAnimeReminders every 5 minutes to scan DB for new episodes
