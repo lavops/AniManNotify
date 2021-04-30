@@ -26,10 +26,7 @@ const checkForAnimeReminders = () => {
                 }
                 //console.log(reminder);
                 str = "New episode is out in Japan.\n";
-                if(anime.totalEpisodes != null)
-                    str += "Current episode is " + anime.currentEpisode + "/"+ anime.totalEpisodes +". We will notify you when next one come's out.\n\n";
-                else
-                    str += "Current episode is " + anime.currentEpisode + "/?. We will notify you when next one come's out.\n\n";
+                str += `Current episode is ${anime.currentEpisode}/${anime.totalEpisodes || `?`}. We will notify you when next one come's out.\n\n`;
 
                 str += "[Vote](https://top.gg/bot/799392333677854751/vote) - [Support Channel](https://discord.com/invite/QV8q9BQXpW)";
                 const embed = new MessageEmbed()
@@ -67,7 +64,7 @@ const checkForAnimeReminders = () => {
             // DELETE if Anime is finished
             if(anime.totalEpisodes == null || anime.totalEpisodes > anime.currentEpisode)
                 db.run("UPDATE anime SET currentEpisode = ?, airingAt = ? WHERE malID = ?", [anime.currentEpisode, anime.airingAt, anime.malID]);
-            else if(anime.totalEpisodes == anime.currentEpisode || anime.currentEpisode > anime.totalEpisodes){
+            else if(anime.currentEpisode >= anime.totalEpisodes){
                 db.run("DELETE FROM anime WHERE malID = ?", [anime.malID]);
                 db.run("DELETE FROM animeReminder WHERE malID = ?", [anime.malID]);
             }
