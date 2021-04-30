@@ -49,17 +49,19 @@ const commands = {
     "listAnime" : listAnimeReminder
 };
 
+const prefix = '!';
+
 // Parse reminder request, save to DB, DM confirmation to user
 client.on('message', (msg) => {
     const args = msg.content.split(" ");
 
-    if (args.length == 0 || args[0].charAt(0) !== '!') 
+    if (args.length == 0 || args[0].charAt(0) !== prefix) 
         return;
 
     const command = args.shift().substr(1);
 
     if (Object.keys(commands).includes(command)) {
-        const removeCommand = "!" + command + " ";
+        const removeCommand = prefix + command + " ";
         msg.content = msg.content.replace(removeCommand, "");
         commands[command](msg);
     }
