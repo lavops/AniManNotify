@@ -30,11 +30,8 @@ const createNewAnimeReminder = async (msg) => {
                     // Succesfully added new reminder
 
                     // Send embed
-                    str = "Succesfully added new anime reminder.\n";
-                    if(anime.totalEpisodes != null)
-                        str += "Lastest episode is " + anime.currentEpisode + "/"+ anime.totalEpisodes +". We will notify you when next one come's out.\n\n";
-                    else
-                        str += "Lastest episode is " + anime.currentEpisode + "/?. We will notify you when next one come's out.\n\n";
+                    str = "Succesfully added new anime reminder.\n\n";
+                    str += `**Episode:** ${anime.currentEpisode}/${anime.totalEpisodes || `?`}\n\n`;
 
                     str += "[Vote](https://top.gg/bot/799392333677854751/vote) - [Support Channel](https://discord.com/invite/QV8q9BQXpW)";
                     const embed = new MessageEmbed()
