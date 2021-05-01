@@ -2,6 +2,7 @@
 const client = require('../discord-config')
 const { MessageEmbed } = require('discord.js')
 const db = require('../../db/database-config')
+const WeekEpoch = 604800;
 
 const checkForAnimeReminders = () => {
 
@@ -17,7 +18,7 @@ const checkForAnimeReminders = () => {
             // Add new values to animes
             console.log(anime.name + " has new episode.");
             anime.currentEpisode = anime.currentEpisode + 1;
-            anime.airingAt = anime.airingAt + 604800;
+            anime.airingAt = anime.airingAt + WeekEpoch;
             
             //NOTIFY all channels about new Anime
             db.each("SELECT malID, username, userID, channelID FROM animeReminder WHERE malID = ?", [anime.malID], (error, reminder) => {
@@ -25,8 +26,8 @@ const checkForAnimeReminders = () => {
                     return console.log('Error or no row found')
                 }
                 //console.log(reminder);
-                str = "New episode is out in Japan.\n";
-                str += `Current episode is ${anime.currentEpisode}/${anime.totalEpisodes || `?`}. We will notify you when next one come's out.\n\n`;
+                str = `New episode of ${anime.name} is now airing!.\n\n`;
+                str += `**Episode:** ${anime.currentEpisode}/${anime.totalEpisodes || `?`}\n\n`;
 
                 str += "[Vote](https://top.gg/bot/799392333677854751/vote) - [Support Channel](https://discord.com/invite/QV8q9BQXpW)";
                 const embed = new MessageEmbed()
