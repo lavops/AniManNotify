@@ -32,13 +32,13 @@ const listAnimeReminder = async (msg) => {
             let names = "";
             let episodes = "";
             let malIDs = "";
-            let airingAt = "";
+            //let airingAt = "";
             for(let i = 0; i < reminders.length; i++){
                 
                 if(names.length + 48 < 1024){
                     malIDs += "" + reminders[i].malID + "\n";
-                    episodes += "" + reminders[i].currentEpisode + ", next ep in " + moment.unix(reminders[i].airingAt).fromNow(true) + "\n";
-                    airingAt += moment.unix(reminders[i].airingAt).fromNow(true) + "\n";
+                    episodes += "Episode " + (reminders[i].currentEpisode + 1) + " in " + moment.unix(reminders[i].airingAt).fromNow(true) + "\n";
+                    //airingAt += moment.unix(reminders[i].airingAt).fromNow(true) + "\n";
                     if(reminders[i].name.length > 48){
                         names += "" + reminders[i].name.slice(0, 45) + "...\n";
                     }
