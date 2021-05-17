@@ -44,9 +44,9 @@ setInterval(checkForAnimeReminders, 300000);
 
 // Bot will use these commands
 const commands = {
-    "addAnime" : createNewAnimeReminder,
-    "deleteAnime" : deleteAnimeReminder,
-    "listAnime" : listAnimeReminder
+    "addAnime": createNewAnimeReminder,
+    "deleteAnime": deleteAnimeReminder,
+    "listAnime": listAnimeReminder
 };
 
 const prefix = '!';
@@ -55,12 +55,12 @@ const prefix = '!';
 client.on('message', (msg) => {
     const args = msg.content.split(" ");
 
-    if (args.length == 0 || args[0].charAt(0) !== prefix) 
+    if (args.length == 0 || args[0].charAt(0) !== prefix)
         return;
 
-    const command = args.shift().substr(1);
+    const command = args.shift().substr(prefix.length);
 
-    if (Object.keys(commands).includes(command)) {
+    if (commands.find(item => item.toLowerCase() == command.toLowerCase())) {
         const removeCommand = prefix + command + " ";
         msg.content = msg.content.replace(removeCommand, "");
         commands[command](msg);
@@ -72,11 +72,11 @@ client.login(process.env.TOKEN).then(() => {
     console.log('Succesfully logged in using token!');
 });
 
-app.get('/',function(req, res){
+app.get('/', function (req, res) {
     res.send('AniMan Notfy Discord Bot');
 })
 
-app.get('/anime',function(req, res){
+app.get('/anime', function (req, res) {
     db.serialize(() => {
         db.all("SELECT * FROM anime", (error, shows) => {
             if (error || shows.length == 0) {
