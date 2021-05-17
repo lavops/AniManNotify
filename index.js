@@ -43,27 +43,60 @@ client.on('ready', () => {
 setInterval(checkForAnimeReminders, 300000);
 
 // Bot will use these commands
-const commands = {
-    "addAnime": createNewAnimeReminder,
-    "deleteAnime": deleteAnimeReminder,
-    "listAnime": listAnimeReminder
-};
+const commands = [
+    {
+        name: "addAnime",
+        run: createNewAnimeReminder,
+        permissions: ["EMBED_LINKS"]
+    },
+    {
+        name: "deleteAnime",
+        run: deleteAnimeReminder,
+        permissions: ["EMBED_LINKS"]
+    },
+    {
+        name: "listAnime",
+        run: listAnimeReminder,
+        permissions: ["EMBED_LINKS"]
+    }
+];
 
 const prefix = '!';
 
 // Parse reminder request, save to DB, DM confirmation to user
 client.on('message', (msg) => {
+    // Disallow commands requested by bots
+    if (msg.bot) return;
+
+    // If the bot has no permission to send messages in this channel, don't even attempt to send a message
+    if (!msg.channel.type == "dm") {
+        const botInGuild = msg.guild.me;
+        if (!msg.channel.permissionsFor(botInGuild).has('SEND_MESSAGES')) return;
+    }
+
     const args = msg.content.split(" ");
+    if (args.length == 0 || args[0].charAt(0) !== prefix) return;
 
-    if (args.length == 0 || args[0].charAt(0) !== prefix)
-        return;
+    const commandName = args.shift().substr(prefix.length);
 
-    const command = args.shift().substr(prefix.length);
+    // Search from the command name (in case sensitive)
+    const commandInfo = commands.find(item => item.name?.toLowerCase() == commandName.toLowerCase());
+    if (commandInfo) {
+        if (commandInfo.permissions && commandInfo.permissions.length > 0 && !msg.channel.type == "dm") {
+            /* If it doesn't have the permission in the channel, return a small message with feedback
+            Note: If you intend to use permissions like 'BAN_MEMBERS' rework this, to work with guild permissions too */
+            const botInGuild = msg.guild.me;
 
-    if (commands.find(item => item.toLowerCase() == command.toLowerCase())) {
-        const removeCommand = prefix + command + " ";
+            if (!msg.channel.permissionsFor(botInGuild).has(commandInfo.permissions)) {
+                return msg.channel.send(`I am missing needed permissions:\n\`${commandInfo.permissions.join("\`, ")}\``)
+            }
+        }
+
+        const removeCommand = `${prefix}${commandName} `;
         msg.content = msg.content.replace(removeCommand, "");
-        commands[command](msg);
+
+        // Run the command and pass the message information along
+        commandInfo.run(msg).catch(error => console.error(`An error occurred while running a command: ${error}`));
     }
 });
 
