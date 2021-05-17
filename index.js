@@ -80,7 +80,7 @@ client.on('message', (msg) => {
     const commandName = args.shift().substr(prefix.length);
 
     // Search from the command name (in case sensitive)
-    const commandInfo = commands.find(item => item.name?.toLowerCase() == commandName.toLowerCase());
+    const commandInfo = commands.find(item => item.name.toLowerCase() == commandName.toLowerCase());
     if (commandInfo) {
         if (commandInfo.permissions && commandInfo.permissions.length > 0 && !msg.channel.type == "dm") {
             /* If it doesn't have the permission in the channel, return a small message with feedback
